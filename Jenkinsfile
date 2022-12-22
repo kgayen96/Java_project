@@ -1,18 +1,17 @@
 pipeline{
     agent any 
     stages{
-        stage ("SonarQubeScanner") {
-            steps {
-                withSonarQubeEnv ("SonarQubeScanner") {
-                sh "mvn sonar:sonar"
+        stage ("sonar quality status"){
+            
+            agent{
+                
+                docker {
+                    image 'maven'
                 }
             }
-        }
             steps{
                 script{
-                    withSonarQubeEnv(credentialsId: 'sonar-jenkins') {
-                            sh 'chmod +x gradlew'
-                            sh './gradlew sonarqube'
+                    withSonarQubeEnv(credentialsId: 'sonarqube') {
                     }
                 }
             }
